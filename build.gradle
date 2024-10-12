@@ -1,0 +1,58 @@
+plugins {
+    id 'java'
+    id 'io.quarkus'
+}
+
+repositories {
+    mavenCentral()
+    mavenLocal()
+}
+
+dependencies {
+    implementation 'io.quarkus:quarkus-cache'
+    implementation 'io.quarkus:quarkus-container-image-docker'
+    implementation enforcedPlatform("${quarkusPlatformGroupId}:${quarkusPlatformArtifactId}:${quarkusPlatformVersion}")
+    implementation 'io.quarkus:quarkus-resteasy-jaxb'
+    implementation 'io.quarkus:quarkus-resteasy-jsonb'
+    implementation 'io.quarkus:quarkus-resteasy'
+    implementation 'io.quarkus:quarkus-arc'
+  // implementation'io.quarkus:quarkus-rest'
+    // https://mvnrepository.com/artifact/javax.ws.rs/javax.ws.rs-api
+//implementation 'javax.ws.rs:javax.ws.rs-api:2.1.1'
+   
+    // https://mvnrepository.com/artifact/io.rest-assured/rest-assured
+    testImplementation 'io.rest-assured:rest-assured:5.5.0'   
+    testImplementation 'io.quarkus:quarkus-junit5'
+//compile 'org.apache.maven.plugins:maven-surefire-plugin:2.21.0'
+    
+}
+   
+
+group 'io.quarkus'
+version '1.0.0-SNAPSHOT'
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_19
+    targetCompatibility = JavaVersion.VERSION_19
+}
+java {
+    toolchain {
+            languageVersion.set(JavaLanguageVersion.of(19))
+    }
+}
+
+test {
+systemProperty 'cucumber.options', '--plugin junit:target/surefire-reports/cucumber-junit.xml' 
+   include '**/*Test.class'
+ useJUnitPlatform()
+   useJUnit()
+    systemProperty "java.util.logging.manager", "org.jboss.logmanager.LogManager"
+}
+compileJava {
+    options.encoding = 'UTF-8'
+    options.compilerArgs << '-parameters'
+}
+
+compileTestJava {
+    options.encoding = 'UTF-8'
+}
