@@ -9,8 +9,9 @@ repositories {
 }
 
 dependencies {
+    implementation 'io.quarkus:quarkus-container-image-jib'
     implementation 'io.quarkus:quarkus-cache'
-    implementation 'io.quarkus:quarkus-container-image-docker'
+    
     implementation enforcedPlatform("${quarkusPlatformGroupId}:${quarkusPlatformArtifactId}:${quarkusPlatformVersion}")
     implementation 'io.quarkus:quarkus-resteasy-jaxb'
     implementation 'io.quarkus:quarkus-resteasy-jsonb'

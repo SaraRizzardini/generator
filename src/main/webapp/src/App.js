@@ -32,7 +32,9 @@ class App extends Component {
     fontStyle: "Helvetica", // Default font style
     selectedBackground: "",
 	fontColor: "#000000",
+	textBoxHeight: "auto"
   }
+
 
   componentDidMount() {
     fetch('/moods')
@@ -54,9 +56,7 @@ class App extends Component {
       )
       .catch(console.log);
   }
-  // Function to save the edited quote
-
-
+  
   setBackground = (imageUrl) => {
     this.setState({ selectedBackground: imageUrl });
   };
@@ -65,11 +65,13 @@ class App extends Component {
     this.setState({ isEditing: !this.state.isEditing });
 	  if (this.state.isEditing) {
         this.adjustTextareaHeight(); // Adjust height when entering edit mode
-      }
+document.getElementById("textEdits").readOnly = "false";     
+	 }
   }
 
   handleInputChange = (event) => {
     this.setState({ editableQuote: event.target.value });
+	document.getElementById("textEdits").value =event.target.value;
 	this.adjustTextareaHeight();
   }
 
@@ -86,16 +88,24 @@ handleColorChange = (event) =>{
 removeBackground = (event) =>{
 	this.setState({backgroundColor: 'transparent'});
 }
-adjustTextareaHeight = () => {
-document.querySelectorAll("textarea").forEach(function(textarea) {
-  textarea.style.height = textarea.scrollHeight + "px";
-  textarea.style.overflowY = "hidden";
 
-  textarea.addEventListener("input", function() {
-    this.style.height = "auto";
-    this.style.height = this.scrollHeight + "px";
+adjustTextareaHeight = () => {
+  document.querySelectorAll("textarea").forEach((textarea) => {
+    // Set initial height
+    textarea.style.height = textarea.scrollHeight + "px";
+    textarea.style.overflowY = "hidden";
+    
+    // Event listener for input
+    textarea.addEventListener("input", (event) => {
+      event.target.style.height = "auto";
+      event.target.style.height = event.target.scrollHeight + "px";
+      
+      // Update the component's state with the new height
+      this.setState({ textBoxHeight: event.target.scrollHeight + "px" });
+    });
   });
-});}
+};
+
   downloadImage = () => {
     const canvas = document.getElementById('quoteCanvas');
     if (canvas) {
@@ -160,23 +170,23 @@ document.querySelectorAll("textarea").forEach(function(textarea) {
                 </div>
 
                 <textarea
+			name="textEdits"
+				id="textEdits"
                   className="form-control-plaintext form-control-lg" // Bootstrap form-control
                   value={this.state.isEditing ? this.state.editableQuote : this.state.selectedQuote}
                   onChange={this.handleInputChange}
-                  //rows="4"
+				  onClick={this.handleInputChange}
+                
                   style={{
 					   position: 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-                    //position: 'relative',
+                    top: '50%',
+                    left: '50%',
+                    transform: 'translate(-50%, -50%)',
                     backgroundColor: this.state.backgroundColor,
 					 textAlign: 'center',
                     fontFamily: this.state.fontStyle,
 					 padding: '20px',
 					 overflow: 'hidden', 
-                  //  resize: 'none', // Prevent manual resizing
-					 //opacity: 0.5,
                     zIndex: 2, // Higher z-index to be above the carousel
                     color: this.state.fontColor, 
                   }}
@@ -212,18 +222,19 @@ document.querySelectorAll("textarea").forEach(function(textarea) {
                     value={this.state.fontStyle}
                     onChange={this.handleFontChange}
                   >
-                    <option value="Arial">Arial</option>
-                    <option value="Courier New">Courier New</option>
-                    <option value="Georgia">Georgia</option>
-                    <option value="Times New Roman">Times New Roman</option>
-                    <option value="Calibri">Calibri</option>
-                    <option value="Verdana">Verdana</option>
-					<option value="Helvetica">Helvetica</option>
-					<option value="Roboto">Roboto</option>
-					<option value="Oxygen">Oxygen</option>
-					<option value="Droid Sans">Droid Sans</option>
-					<option value="londrina-sketch-regular">Londrina Sketch</option>
-                  <option value="Protest Strike">Protest Strike</option>
+                    <option value="Arial" style={{fontFamily:"Arial"}}>Arial</option>
+                    <option value="Courier New" style={{fontFamily:"Courier New"}}>Courier New</option>
+                    <option value="Georgia"  style={{fontFamily:"Georgia"}}>Georgia</option>
+                    <option value="Times New Roman" style={{fontFamily:"Times New Roman"}}>Times New Roman</option>
+                    <option value="Calibri" style={{fontFamily:"Calibri"}}>Calibri</option>
+                    <option value="Verdana" style={{fontFamily:"Verdana"}}>Verdana</option>
+					<option value="Helvetica" style={{fontFamily:"Helvetica"}}>Helvetica</option>
+					<option value="Roboto" style={{fontFamily:"Roboto"}}>Roboto</option>
+					<option value="Oxygen" style={{fontFamily:"Oxygen"}}>Oxygen</option>
+					<option value="Droid Sans" style={{fontFamily:"Droid Sans"}}>Droid Sans</option>
+					<option value="Dancing Script" style={{fontFamily:"Dancing Script"}}>Dancing Script</option>
+					<option value="londrina-sketch-regular" style={{fontFamily:"Londrina Sketch"}}>Londrina Sketch</option>
+                  <option value="Protest Strike" style={{fontFamily:"Protest Strike"}}>Protest Strike</option>
 				  </select>
                   <br />
 				  <label className="form-label">Font Color: </label>
@@ -245,6 +256,9 @@ document.querySelectorAll("textarea").forEach(function(textarea) {
   selectedBackground={this.state.selectedBackground} 
   fontColor={this.state.fontColor} 
   fontStyle={this.state.fontStyle}
+  backgroundColor={this.state.backgroundColor}
+  onQuoteChange={this.handleInputChange}
+  textBoxHeight={this.state.textBoxHeight}
 />
       </div>
    

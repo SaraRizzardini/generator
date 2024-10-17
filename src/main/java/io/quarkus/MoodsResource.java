@@ -2,9 +2,7 @@ package io.quarkus;
 
 import java.util.Collections;
 import java.util.LinkedHashMap;
-import java.util.Scanner;
 import java.util.Set;
-
 import jakarta.inject.Singleton;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;

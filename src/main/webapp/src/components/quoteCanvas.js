@@ -1,92 +1,112 @@
 import React, { Component } from 'react';
-
+import { drawText,getTextHeight } from 'canvas-txt';
 class QuoteCanvas extends Component {
-  componentDidUpdate() {
-    const canvas = document.getElementById('quoteCanvas');
-    if (!canvas) return; // Check if the canvas element exists
-
-    const ctx = canvas.getContext('2d');
-    if (!ctx) return; // Check if the canvas context exists
-
-    // Clear the canvas before redrawing
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-    // Set a default background color (if there's no image)
-    if (!this.props.selectedBackground) {
-      ctx.fillStyle = this.props.backgroundColor || 'white';
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-    }
-
-    if (this.props.selectedBackground) {
-      const img = new Image();
-      img.src = this.props.selectedBackground;
-
-      img.onload = () => {
-        // Draw the image to fill the entire canvas
-        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-
-        // Now draw the text on top of the image
-        this.drawTextOnCanvas(ctx, canvas);
-      };
-
-      img.onerror = (e) => {
-        console.error("Error loading image:", e);
-      };
-    } else {
-      // If no image is selected, just draw the text on a plain background
-      this.drawTextOnCanvas(ctx, canvas);
-    }
+	  textAreaRef = React.createRef();
+	  
+componentDidUpdate(prevProps) {
+  if (
+    prevProps.selectedQuote !== this.props.selectedQuote ||
+    prevProps.fontColor !== this.props.fontColor ||
+    prevProps.fontStyle !== this.props.fontStyle ||
+    prevProps.textBoxHeight !== this.props.textBoxHeight || // Monitor textBoxHeight changes
+    prevProps.selectedBackground !== this.props.selectedBackground || // Add check for background change
+    prevProps.backgroundColor !== this.props.backgroundColor
+  ) {
+    this.updateCanvas(); 
   }
+}
+//handle canvas drawing
+updateCanvas = () => {
+  const canvas = document.getElementById('quoteCanvas');
+  if (!canvas) return;
+
+  const ctx = canvas.getContext('2d');
+  if (!ctx) return;
+
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  if (this.props.selectedBackground) {
+    const img = new Image();
+    img.src = this.props.selectedBackground;
+
+    img.onload = () => {
+      ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+      this.drawTextOnCanvas(ctx, canvas);
+    };
+
+    img.onerror = (e) => {
+      console.error("Error loading image:", e);
+    };
+  } else {
+   // ctx.fillStyle = this.props.backgroundColor || 'white';
+    //ctx.fillRect(0, 0, canvas.width, canvas.height);
+    this.drawTextOnCanvas(ctx, canvas);
+  }
+};
+
 
   drawTextOnCanvas(ctx, canvas) {
-    // Check if the canvas and context are available before proceeding
-    if (!canvas || !ctx) return;
+  
+  if (!canvas || !ctx) return;
 
-    // Set font styles
-    ctx.font = `48px ${this.props.fontStyle}`;
-    ctx.fillStyle = this.props.fontColor;
-    ctx.textAlign = "center";
-    ctx.textBaseline = "middle";
+  const text = this.props.selectedQuote || "";
+  const fontStyle = this.props.fontStyle || "Helvetica";
+  const fontColor = this.props.fontColor || "#000000";
+  const backgroundColor = this.props.backgroundColor || "#ffffff"; // Background color from props
+ const textBoxHeight = this.props.textBoxHeight || "200 px";
+const maxWidth = canvas.width ; 
+console.log("maxWidth:", maxWidth);
+  const lineHeight = 40; 
+  const x = canvas.width / 2;
+  const y = canvas.height / 2 - (text.length / 2) * lineHeight;
+  const padding = 10; 
+  const textHeight = getTextHeight({ ctx, text, fontStyle });
+  const rectX = x - maxWidth / 2 - padding;
+  const rectY = y - textHeight / 2 - padding;
+  // Apply font settings
+ // ctx.font = `30px ${fontStyle}`;
+  //ctx.textAlign = "center";
+  //ctx.textBaseline = "middle";
+//draw text box
+ctx.globalCompositeOperation = "destination-over";
+ctx.fillStyle = backgroundColor;
+  ctx.fillRect(
+    rectX, 
+    rectY, 
+    maxWidth + 2 * padding, 
+    textBoxHeight 
+  );
+ console.log("recty:",rectY); 
+console.log("Background Color:", backgroundColor);
+console.log("quote:", text);
+console.log("text-box height:", textBoxHeight);
+console.log("text height:", textHeight);
 
-    // Split the quote into multiple lines if it's too long
-    const quote = this.props.selectedQuote || '';
-    const maxWidth = 550; // Adjust according to your canvas width
-    const lineHeight = 50;
-    const lines = this.getLines(ctx, quote, maxWidth);
+  //draw the text 
+  const { height } = drawText(ctx, text, {
+  x: rectX + padding,
+  y:  y - textHeight / 2 - padding,
+  width: maxWidth,
+  fontSize: 30,
+  fontColor: fontColor
+})
 
-    // Calculate x and y positions based on canvas dimensions
-    const x = canvas.width / 2;
-    const y = canvas.height / 2 - (lines.length / 2) * lineHeight;
+ 
+console.log("quote:", text);
+console.log("Total height:",height);
+console.log("Font-color:", fontColor);
+  
+}
 
-    // Draw each line of the quote text
-    lines.forEach((line, index) => {
-      ctx.fillText(line, x, y + index * lineHeight);
-    });
-  }
-
-  // Utility function to split long text into multiple lines
-  getLines(ctx, text, maxWidth) {
-    const words = text.split(' ');
-    const lines = [];
-    let currentLine = words[0];
-
-    for (let i = 1; i < words.length; i++) {
-      const word = words[i];
-      const width = ctx.measureText(currentLine + ' ' + word).width;
-      if (width < maxWidth) {
-        currentLine += ' ' + word;
-      } else {
-        lines.push(currentLine);
-        currentLine = word;
-      }
-    }
-    lines.push(currentLine);
-    return lines;
-  }
-
-  render() {
-    return <canvas id="quoteCanvas" width="600" height="600"></canvas>;
+ render() {
+    return (
+  
+        <canvas id="quoteCanvas" width="600" height="600" style={{ backgroundColor: this.props.backgroundColor, fontStyle: this.props.fontStyle }}></canvas>     
+    
+    );
   }
 }
 
 export default QuoteCanvas;
+
+
