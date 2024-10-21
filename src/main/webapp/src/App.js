@@ -82,10 +82,10 @@ document.getElementById("textEdits").readOnly = "false";
   handleFontChange = (event) => {
     this.setState({ fontStyle: event.target.value });
   }
-handleColorChange = (event) =>{
+  handleColorChange = (event) =>{
 	this.setState({ fontColor: event.target.value });
 }
-removeBackground = (event) =>{
+  removeBackground = (event) =>{
 	this.setState({backgroundColor: 'transparent'});
 }
 
@@ -145,7 +145,6 @@ adjustTextareaHeight = () => {
    return (
       <div className="container"> {/* Bootstrap container */}
         <Moods moods={this.state.moods} generateQuote={this.generateQuote} />
-
         {this.state.selectedQuote && (
           <div className="mt-5"> {/* Bootstrap margin-top */}
             <center>
@@ -178,15 +177,15 @@ adjustTextareaHeight = () => {
 				  onClick={this.handleInputChange}
                 
                   style={{
-					   position: 'absolute',
+					position: 'absolute',
                     top: '50%',
                     left: '50%',
                     transform: 'translate(-50%, -50%)',
                     backgroundColor: this.state.backgroundColor,
-					 textAlign: 'center',
+				    textAlign: 'center',
                     fontFamily: this.state.fontStyle,
-					 padding: '20px',
-					 overflow: 'hidden', 
+				    padding: '20px',
+					overflow: 'hidden', 
                     zIndex: 2, // Higher z-index to be above the carousel
                     color: this.state.fontColor, 
                   }}
@@ -233,8 +232,9 @@ adjustTextareaHeight = () => {
 					<option value="Oxygen" style={{fontFamily:"Oxygen"}}>Oxygen</option>
 					<option value="Droid Sans" style={{fontFamily:"Droid Sans"}}>Droid Sans</option>
 					<option value="Dancing Script" style={{fontFamily:"Dancing Script"}}>Dancing Script</option>
-					<option value="londrina-sketch-regular" style={{fontFamily:"Londrina Sketch"}}>Londrina Sketch</option>
-                  <option value="Protest Strike" style={{fontFamily:"Protest Strike"}}>Protest Strike</option>
+					<option value="Pacifico" style={{fontFamily:"Pacifico"}}>Pacifico</option>
+					<option value="Londrina Sketch" style={{fontFamily:"Londrina Sketch"}}>Londrina Sketch</option>
+                    <option value="Protest Strike" style={{fontFamily:"Protest Strike"}}>Protest Strike</option>
 				  </select>
                   <br />
 				  <label className="form-label">Font Color: </label>
