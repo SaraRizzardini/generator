@@ -55,13 +55,14 @@ updateCanvas = () => {
  const textBoxHeight = this.props.textBoxHeight || "200 px";
  const maxWidth = canvas.width - 10 ; 
 console.log("maxWidth:", maxWidth);
-  const lineHeight = 40; 
+
+ const lineHeight = 40; 
   const x = canvas.width / 2;
   const y = canvas.height / 2;
   const padding = 10; 
   const textHeight = getTextHeight({ ctx, text, fontStyle });
   const rectX = x - (maxWidth / 2) ;
-  const rectY = y - (textHeight*3) ;
+  const rectY = y - (textHeight*6) ;
   const rectWidth = maxWidth + 2 * padding;     // Width of the rectangle
   const rectHeight = textHeight + 2 * padding;  // Height of the rectangle
 
@@ -75,17 +76,12 @@ ctx.fillStyle = backgroundColor;
     rectX, 
     rectY, 
     maxWidth, 
-    textHeight*5
-  );
-  
-console.log("recty:",rectY); 
-console.log("Background Color:", backgroundColor);
-console.log("quote:", text);
-console.log("text-box height:", textBoxHeight);
-console.log("text height:", textHeight);
-console.log("maxWidth:", maxWidth);
+   textHeight*10
+ 
+  ); 
+
   //draw the text 
-  ctx.fillStyle = fontColor;
+ctx.fillStyle = fontColor;
 const { height } = drawText(ctx, text, {
   x: rectX + padding,
   y:  y - textHeight / 2 - padding,
@@ -99,7 +95,7 @@ console.log("quote:", text);
 console.log("height in drawText:",height);
 console.log("Font-color:", fontColor);
   
-}
+  }
 
  render() {
     return (

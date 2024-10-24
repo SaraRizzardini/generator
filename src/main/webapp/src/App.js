@@ -85,9 +85,48 @@ document.getElementById("textEdits").readOnly = "false";
   handleColorChange = (event) =>{
 	this.setState({ fontColor: event.target.value });
 }
-  removeBackground = (event) =>{
-	this.setState({backgroundColor: 'transparent'});
-}
+  removeBackground = (event) => {
+  const isChecked = event.target.checked;
+
+  if (isChecked) {
+    this.setState({ backgroundColor: 'transparent' });
+  } else {
+    this.setState({ backgroundColor: "rgba(255, 255, 255, 0.5)" });
+  }
+};
+addOpacity = (event) => {
+  const isChecked = event.target.checked;
+
+  // Check if the current background color is in rgba format
+  let currentColor = this.state.backgroundColor;
+
+  // If the color is in hex format (like "#ffffff"), convert it to rgb first
+  if (currentColor.startsWith("#")) {
+    const hex = currentColor.replace("#", "");
+    const r = parseInt(hex.substring(0, 2), 16);
+    const g = parseInt(hex.substring(2, 4), 16);
+    const b = parseInt(hex.substring(4, 6), 16);
+    currentColor = `rgb(${r}, ${g}, ${b})`;
+  }
+
+  // Check if the current color is in rgb format
+  if (currentColor.startsWith("rgb") && !currentColor.startsWith("rgba")) {
+    // Convert rgb to rgba and apply opacity
+    if (isChecked) {
+      this.setState({ backgroundColor: currentColor.replace("rgb", "rgba").replace(")", ", 0.5)") });
+    } else {
+      this.setState({ backgroundColor: currentColor.replace("rgb", "rgba").replace(")", ", 1)") });
+    }
+  } else if (currentColor.startsWith("rgba")) {
+    // If already rgba, adjust the alpha channel directly
+    if (isChecked) {
+      this.setState({ backgroundColor: currentColor.replace(/rgba\((\d+,\s*\d+,\s*\d+),\s*\d*\.?\d+\)/, 'rgba($1, 0.5)') });
+    } else {
+      this.setState({ backgroundColor: currentColor.replace(/rgba\((\d+,\s*\d+,\s*\d+),\s*\d*\.?\d+\)/, 'rgba($1, 1)') });
+    }
+  }
+};
+
 
 adjustTextareaHeight = () => {
   document.querySelectorAll("textarea").forEach((textarea) => {
@@ -175,7 +214,7 @@ adjustTextareaHeight = () => {
                   value={this.state.isEditing ? this.state.editableQuote : this.state.selectedQuote}
                   onChange={this.handleInputChange}
 				  onClick={this.handleInputChange}
-                
+                  spellcheck="false"
                   style={{
 					position: 'absolute',
                     top: '50%',
@@ -212,8 +251,18 @@ adjustTextareaHeight = () => {
                   />
                   <br />
 				  {/*Remove Background option*/}
-				  <button className="btn btn-info mt-2" onClick={this.removeBackground}>Remove Background</button>
-                  <br />
+					  {/* <button className="btn btn-info mt-2" onClick={this.removeBackground}>Remove Background</button>*/}
+<div>
+<div class="form-check form-switch form-check-inline">
+  <input class="form-check-input" type="checkbox"  id="flexSwitchCheckCheckedDefault" name="removeBG" onChange={this.removeBackground}/>
+  <label class="form-check-label" for="flexSwitchCheckCheckedDefault">Remove Background</label>
+</div>      
+<div class="form-check form-switch form-check-inline">
+  <input class="form-check-input" type="checkbox"  id="flexSwitchCheckCheckedDefault" onChange={this.addOpacity}  />
+  <label class="form-check-label" for="flexSwitchCheckCheckedDefault">Blur Background</label>
+</div>   
+</div>            
+				 <br />
 				  {/* Font Style Picker */}
                   <label className="form-label">Font Style: </label>
                   <select
