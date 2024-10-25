@@ -22,7 +22,7 @@ public class QuoteProvider {
 	private static Map<Integer, String>changeQuotes=new HashMap<>();
 	private static Map<Integer, String>goodNightQuotes=new HashMap<>();
 	private static Map<Integer, String>dreamQuotes=new HashMap<>();
-
+private static Set authors;
 	public static Map<Integer,String>inspirationQuotes(){
 		return inspirationQuotes;
 	}
@@ -47,6 +47,12 @@ public class QuoteProvider {
 	public static Map<Integer,String>dreamQuotes(){
 		return dreamQuotes;
 	}
+	public void setAuthors() {
+		String []auth={"Ada Lovelace", "Aesop", "Cesare Pavese", "Eduardo Galeano", "Emil Cioran" , "Fela Kuti", "Fyodor Dostoevsky", "Gabriel García Márquez","Lou Reed", "Manly P. Hall", "Oscar Wylde", "Rudolf Steiner","William Shakespeare"};
+		List<String> auths = Arrays.asList(auth);
+	    authors = new HashSet<>(auths);
+	    
+		}
 	public void setInspirationQuotes() {
 		inspirationQuotes.put(1, "Inspiration quote goes here.");
 		inspirationQuotes.put(2, "Inspiration quote goes here.");
@@ -64,7 +70,7 @@ public class QuoteProvider {
 		motivationQuotes.put(1, "In a crisis, give help first and then advice. \n   - Aesop");
 		motivationQuotes.put(2, "Curiosity is one of the many masks of love. \n   - Gabriel García Márquez");
 		motivationQuotes.put(3, "Many small people, in small places, doing small things can change the world. \n   - Eduardo Galeano.");
-		motivationQuotes.put(4, "Experiences are the chemicals of life with which the philosopher experiments  \n  - Manly Hall.");
+		motivationQuotes.put(4, "Experiences are the chemicals of life with which the philosopher experiments  \n  - Manly P. Hall.");
 		motivationQuotes.put(5, "Motivation quote goes here.");
 		motivationQuotes.put(6, "Motivation quote goes here.");
 		motivationQuotes.put(7, "Motivation quote goes here.");
@@ -151,6 +157,32 @@ public class QuoteProvider {
 		dreamQuotes.put(10, "Love quote goes here.");
 		dreamQuotes.put(11, "Love quote goes here.");
 	}
+	public String getAuthor(String text) {
+		 List<String> auth = new ArrayList<>(authors);
+		 String[] auths = auth.toArray(new String[0]);
+		   for (String author : auths) {
+		        if (text.toLowerCase().contains(author.toLowerCase())) {
+		            return author;  // Return the matched author
+		        }
+		    }
+
+		    return "unknown";  // Return 'unknown' if no author is found
+		}
+//		 String[] words = text.split(" ");
+//		 for(String word :words) {
+//			 for(int i=0; i<= auths.length-1; i++) {
+//				 String checker = word.concat(" "+ word+1);
+//				 if(checker.equalsIgnoreCase(auths[i])) {
+//					 String author = auths[i];
+//					 return author;}
+//				 else {return "unknown";
+//					 
+//				 }
+//			 
+//			 }
+//		 } 
+	
+//	}
 	@GET
 	@Path("/{mood}")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -200,7 +232,8 @@ public class QuoteProvider {
 
        int randomId = rand.nextInt(size) + 1; // Generate a random number based on the size of the quotes
        String randomQuote = selectedQuotes.get(randomId);
-		return Response.ok( new Quote(randomId, randomQuote)).build();
+     String author = getAuthor(randomQuote);
+		return Response.ok( new Quote(randomId, randomQuote, author)).build();
 	}
 
 

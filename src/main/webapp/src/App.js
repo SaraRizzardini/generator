@@ -27,6 +27,7 @@ class App extends Component {
     moods: [],
     selectedQuote: "",
     editableQuote: "",
+	author: "",
     isEditing: false,
     backgroundColor: "rgba(255, 255, 255, 0.5)", // Default background color
     fontStyle: "Helvetica", // Default font style
@@ -51,6 +52,7 @@ class App extends Component {
       .then((data) => this.setState({
         selectedQuote: data.text,
         editableQuote: data.text,
+		author: data.author  || "Unknown",
         isEditing: false
        })
       )
@@ -65,13 +67,13 @@ class App extends Component {
     this.setState({ isEditing: !this.state.isEditing });
 	  if (this.state.isEditing) {
         this.adjustTextareaHeight(); // Adjust height when entering edit mode
-document.getElementById("textEdits").readOnly = "false";     
+//document.getElementById("text").readOnly = "false";     
 	 }
   }
 
   handleInputChange = (event) => {
     this.setState({ editableQuote: event.target.value });
-	document.getElementById("textEdits").value =event.target.value;
+	document.getElementById("text").value =event.target.value;
 	this.adjustTextareaHeight();
   }
 
@@ -182,7 +184,7 @@ adjustTextareaHeight = () => {
 
  
    return (
-      <div className="container"> {/* Bootstrap container */}
+      <div className="container" id="quote-box"> {/* Bootstrap container */}
         <Moods moods={this.state.moods} generateQuote={this.generateQuote} />
         {this.state.selectedQuote && (
           <div className="mt-5"> {/* Bootstrap margin-top */}
@@ -208,8 +210,9 @@ adjustTextareaHeight = () => {
                 </div>
 
                 <textarea
-			name="textEdits"
-				id="textEdits"
+			name="text"
+				id="text"
+				//readOnly=false
                   className="form-control-plaintext form-control-lg" // Bootstrap form-control
                   value={this.state.isEditing ? this.state.editableQuote : this.state.selectedQuote}
                   onChange={this.handleInputChange}

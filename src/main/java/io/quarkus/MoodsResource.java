@@ -22,6 +22,7 @@ public class MoodsResource {
         quoteProvider.setExilQuotes();
         quoteProvider.setChangeQuotes();
         quoteProvider.setGoodNightQuotes();
+        quoteProvider.setAuthors();
 		Set <Mood> moods = Collections.newSetFromMap(Collections.synchronizedMap(new LinkedHashMap<>()));
 
 		Mood inspiration = new Mood();
