@@ -48,7 +48,7 @@ private static Set authors;
 		return dreamQuotes;
 	}
 	public void setAuthors() {
-		String []auth={"Ada Lovelace", "Aesop", "Cesare Pavese", "Eduardo Galeano", "Emil Cioran" , "Fela Kuti", "Fyodor Dostoevsky", "Gabriel García Márquez","Lou Reed", "Manly P. Hall", "Oscar Wylde", "Rudolf Steiner","William Shakespeare"};
+		String []auth={"Ada Lovelace", "Aesop", "Cesare Pavese", "Eduardo Galeano", "Emil Cioran" , "Fela Kuti", "Fyodor Dostoevsky", "Gabriel García Márquez","Lou Reed", "Manly P. Hall", "Oscar Wylde", "Rudolf Steiner", "William Shakespeare"};
 		List<String> auths = Arrays.asList(auth);
 	    authors = new HashSet<>(auths);
 	    
@@ -71,7 +71,7 @@ private static Set authors;
 		motivationQuotes.put(2, "Curiosity is one of the many masks of love. \n   - Gabriel García Márquez");
 		motivationQuotes.put(3, "Many small people, in small places, doing small things can change the world. \n   - Eduardo Galeano.");
 		motivationQuotes.put(4, "Experiences are the chemicals of life with which the philosopher experiments  \n  - Manly P. Hall.");
-		motivationQuotes.put(5, "Motivation quote goes here.");
+		motivationQuotes.put(5, "Besides, nowadays, almost all capable people are terribly afraid of being ridiculous, and are miserable because of it. \n   -  Fyodor Dostoevsky, The Brothers Karamazov");
 		motivationQuotes.put(6, "Motivation quote goes here.");
 		motivationQuotes.put(7, "Motivation quote goes here.");
 		motivationQuotes.put(8, "Motivation quote goes here.");
@@ -88,18 +88,18 @@ private static Set authors;
 		loveQuotes.put(6, "Love is never lost; it only changes form.\n - Gabriel García Márquez, one hundred years of solitude");
 		loveQuotes.put(7, "It's enough for me to be sure that you and I exist at this moment.\n - Gabriel García Márquez, one hundred years of solitude");
 		loveQuotes.put(8, "There is always something left to love.\n - Gabriel García Márquez, one hundred years of solitude.");
-		loveQuotes.put(9, "Love quote goes here.");
+		loveQuotes.put(9, "What is hell? I maintain that it is the suffering of being unable to love. \n   -  Fyodor Dostoevsky, The Brothers Karamazov");
 		loveQuotes.put(10, "Love quote goes here.");
 		loveQuotes.put(11, "Love quote goes here.");
 	}
 	public void setRevolutionQuotes() {
-		revolutionQuotes.put(1, "Revolution quote goes here.");
+		revolutionQuotes.put(1, "Oh! I hate the cheap severity of abstract ethics.  \n - Oscar Wilde, The Canterville Ghost");
 		revolutionQuotes.put(2, "I’m not a fan of nostalgia. I’m a fan of the future. \n - Lou Reed");
 		revolutionQuotes.put(3, "Conformity is the last refuge of the unimaginitive. \n - Oscar Wilde");
 		revolutionQuotes.put(4, "Better to starve free than be a fat slave. \n - Aesop");
 		revolutionQuotes.put(5, "Always stop to think wheter your fun may be the cause of another's unhappiness. \n - Aesop");
 		revolutionQuotes.put(6, "One must learn to overcome fear in order to be truly free.\n - Gabriel García Márquez, one hundred years of solitude");
-		revolutionQuotes.put(7, "Exil quote goes here.");
+		revolutionQuotes.put(7, "Humans can be better then they are. So let's do that. \n - Oscar Wilde, Caliban's War");
 		revolutionQuotes.put(8, "Love quote goes here.");
 		revolutionQuotes.put(9, "Love quote goes here.");
 		revolutionQuotes.put(10, "Love quote goes here.");
@@ -111,7 +111,7 @@ private static Set authors;
 		goodNightQuotes.put(3, "Dreams are the fragile whispers of our hearts, \nguiding us towards what we desire most. \n.  - Fyodor Dostoevsky -  The White Nights.");
 		goodNightQuotes.put(4, "To philosophize is to learn how to die. - Emil Cioran.");
 		goodNightQuotes.put(5, "To live is to suffer, to survive is to find some meaning in the suffering. \n- Friedrich Nietzsche");
-		goodNightQuotes.put(6, "We have exiled beauty; the Greeks took up arms for her. \\n- Albert Camus");
+		goodNightQuotes.put(6, "I want peace. Happiness. Not only for myself. For everybody. \n   - Fela Kuti");
 		goodNightQuotes.put(7, "A dreamer is someone that find is one who can only find his way by moonlight. \n  - Oscar Wilde");
 		goodNightQuotes.put(8, "Love quote goes here.");
 		goodNightQuotes.put(9, "Love quote goes here.");

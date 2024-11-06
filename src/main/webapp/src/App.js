@@ -4,6 +4,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min'; 
 import React, { Component } from 'react';
 import Moods from './components/moods';
+//import authors from '/authors/authors.json';
 import QuoteCanvas from './components/quoteCanvas.js';
 import destroyedCar from './img/destroyedCar.jpg';
 import marlaDango from './img/marlaDango.jpg';
@@ -28,6 +29,10 @@ class App extends Component {
     selectedQuote: "",
     editableQuote: "",
 	author: "",
+	authTitle: "",
+			  authSub: "",
+			  authDates: "",
+			  authText: "", 
     isEditing: false,
     backgroundColor: "rgba(255, 255, 255, 0.5)", // Default background color
     fontStyle: "Helvetica", // Default font style
@@ -42,22 +47,51 @@ class App extends Component {
       .then(res => res.json())
       .then((data) => {
         this.setState({ moods: data });
+		//this.fetchAuthor();
       })
       .catch(console.log);
   }
+ fetchAuthor() {
+  fetch('/authors/authors.json')
+  .then((res) => res.json())
+  .then((data) => {
+    // Access the "authors" array within the JSON data
+    if (Array.isArray(data.authors)) {
+      const authorDetails = data.authors.find(author => author.name === this.state.author);
+      if (authorDetails) {
+        this.setState({
+          authTitle: authorDetails.title,
+          authSub: authorDetails.subtitle,
+          authDates: authorDetails.dates,
+          authText: authorDetails.text
+        });
+      } else {
+        console.log("Author not found in JSON data.");
+      }
+    } else {
+      console.error("Authors array is missing or data is malformed:", data);
+    }
+  })
+  .catch(console.log);
 
+}
   generateQuote = (mood) => {
-    fetch(`/moods/${mood.toLowerCase()}`)
-      .then(res => res.json())
-      .then((data) => this.setState({
+  fetch(`/moods/${mood.toLowerCase()}`)
+    .then(res => res.json())
+    .then((data) => {
+      this.setState({
         selectedQuote: data.text,
         editableQuote: data.text,
-		author: data.author  || "Unknown",
+        author: data.author,
         isEditing: false
-       })
-      )
-      .catch(console.log);
-  }
+      }, () => {
+        if (data.author) {
+          this.fetchAuthor();  // Fetch author info only if author is present
+        }
+      });
+    })
+    .catch(console.log);
+};
   
   setBackground = (imageUrl) => {
     this.setState({ selectedBackground: imageUrl });
@@ -67,10 +101,11 @@ class App extends Component {
     this.setState({ isEditing: !this.state.isEditing });
 	  if (this.state.isEditing) {
         this.adjustTextareaHeight(); // Adjust height when entering edit mode
-//document.getElementById("text").readOnly = "false";     
+document.getElementById("text").readOnly = "false";     
 	 }
   }
 
+	
   handleInputChange = (event) => {
     this.setState({ editableQuote: event.target.value });
 	document.getElementById("text").value =event.target.value;
@@ -235,9 +270,25 @@ adjustTextareaHeight = () => {
               </div>
 <center>
 <div className=" d-flex justify-content-center mt-2">
-              <button className="btn btn-info mt-2" onClick={this.toggleEdit}>
-                {this.state.isEditing ? 'Save' : 'Edit'}
+              <button className="btn btn-primary" onClick={this.toggleEdit} >
+                {this.state.isEditing ? "<" : 'Edit'}
               </button>
+			  <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">{this.state.author}</button>
+
+<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
+  <div class="offcanvas-header">
+    <h1 id="offcanvasRightLabel">{this.state.author}</h1>
+	 
+    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+  </div>
+  <div class="offcanvas-body">
+  <h2>{this.state.authTitle}</h2>
+  <h3>
+        <small className="text-muted">{this.state.authSub}</small>
+      </h3>
+    <p>{this.state.authText}</p>
+  </div>
+</div>
 			  </div>
 </center>
               {this.state.isEditing && (
