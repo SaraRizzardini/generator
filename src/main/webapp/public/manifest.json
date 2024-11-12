@@ -1,6 +1,7 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "Random Quote Generator",
+  "name": "Let the random speak",
+   "author":"Sara Rizzardini",
   "icons": [
     {
       "src": "favicon.ico",

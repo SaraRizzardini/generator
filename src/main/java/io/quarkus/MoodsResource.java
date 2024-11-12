@@ -22,6 +22,7 @@ public class MoodsResource {
         quoteProvider.setExilQuotes();
         quoteProvider.setChangeQuotes();
         quoteProvider.setGoodNightQuotes();
+        quoteProvider.setDreamQuotes();
         quoteProvider.setAuthors();
 		Set <Mood> moods = Collections.newSetFromMap(Collections.synchronizedMap(new LinkedHashMap<>()));
 
@@ -44,6 +45,7 @@ public class MoodsResource {
 		
 		Mood dream = new Mood();
 		dream.setName("Dream");
+		dream.setQuotes(QuoteProvider.dreamQuotes());
 		moods.add(dream);
 		
 		Mood exil = new Mood();
@@ -52,7 +54,8 @@ public class MoodsResource {
 		moods.add(exil);
 		
 		Mood goodNight = new Mood();
-		goodNight.setName("Good Night");
+		goodNight.setName("Good-night");
+		goodNight.setQuotes(QuoteProvider.goodNightQuotes());
 		moods.add(goodNight);
 		
 		Mood motivation = new Mood();

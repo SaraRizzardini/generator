@@ -59,7 +59,7 @@ console.log("maxWidth:", maxWidth);
  const lineHeight = 40; 
   const x = canvas.width / 2;
   const y = canvas.height / 2;
-  const padding = 10; 
+  const padding = 20; 
   const textHeight = getTextHeight({ ctx, text, fontStyle });
   const rectX = x - (maxWidth / 2) ;
   const rectY = y - (textHeight*6) ;
@@ -107,5 +107,3 @@ console.log("Font-color:", fontColor);
 }
 
 export default QuoteCanvas;
-
-

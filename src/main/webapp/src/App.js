@@ -63,8 +63,11 @@ class App extends Component {
           authTitle: authorDetails.title,
           authSub: authorDetails.subtitle,
           authDates: authorDetails.dates,
-          authText: authorDetails.text
+          authText: authorDetails.text,
+		  attribution: authorDetails.attribution,
+		  imgUrl: authorDetails.imgUrl
         });
+		console.log(this.state.imgUrl); 
       } else {
         console.log("Author not found in JSON data.");
       }
@@ -270,10 +273,10 @@ adjustTextareaHeight = () => {
               </div>
 <center>
 <div className=" d-flex justify-content-center mt-2">
-              <button className="btn btn-primary" onClick={this.toggleEdit} >
+              <button className="btn btn-light" onClick={this.toggleEdit} >
                 {this.state.isEditing ? "<" : 'Edit'}
               </button>
-			  <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">{this.state.author}</button>
+			  <button class="btn btn-dark" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">{this.state.author}</button>
 
 <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
   <div class="offcanvas-header">
@@ -283,6 +286,8 @@ adjustTextareaHeight = () => {
   </div>
   <div class="offcanvas-body">
   <h2>{this.state.authTitle}</h2>
+  <h3>{this.state.authDates}</h3>
+  <img title={this.state.attribution} className="img-fluid" src={this.state.imgUrl} alt="Author portrait"></img>
   <h3>
         <small className="text-muted">{this.state.authSub}</small>
       </h3>
@@ -338,6 +343,11 @@ adjustTextareaHeight = () => {
 					<option value="Pacifico" style={{fontFamily:"Pacifico"}}>Pacifico</option>
 					<option value="Londrina Sketch" style={{fontFamily:"Londrina Sketch"}}>Londrina Sketch</option>
                     <option value="Protest Strike" style={{fontFamily:"Protest Strike"}}>Protest Strike</option>
+				  <option value="Rakkas" style={{fontFamily:"Rakkas"}}>Rakkas</option>
+				  <option value="Permanent Marker" style={{fontFamily:"Permanent Marker"}}>Permanent Marker</option>
+				  <option value="Shadows Into Light" style={{fontFamily:"Shadows Into Light"}}>Shadows Into Light</option>
+				   <option value="Lobster" style={{fontFamily:"Lobster"}}>Lobster</option>
+				   <option value="Lexend Mega" style={{fontFamily:"Lexend Mega"}}>Lexend Mega</option>
 				  </select>
                   <br />
 				  <label className="form-label">Font Color: </label>
