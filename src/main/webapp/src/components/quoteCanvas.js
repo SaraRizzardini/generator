@@ -10,7 +10,9 @@ componentDidUpdate(prevProps) {
     prevProps.fontStyle !== this.props.fontStyle ||
     prevProps.textBoxHeight !== this.props.textBoxHeight || // Monitor textBoxHeight changes
     prevProps.selectedBackground !== this.props.selectedBackground || // Add check for background change
-    prevProps.backgroundColor !== this.props.backgroundColor
+    prevProps.backgroundColor !== this.props.backgroundColor ||
+	prevProps.filterEnabled !== this.props.filterEnabled ||
+	prevProps.bw !== this.props.bw
   ) {
     this.updateCanvas(); 
   }
@@ -28,10 +30,19 @@ updateCanvas = () => {
   if (this.props.selectedBackground) {
     const img = new Image();
     img.src = this.props.selectedBackground;
-
+	if (this.props.filterEnabled) {
+  ctx.filter = "contrast(140%) brightness(100%) saturate(110%) sepia(50%)";
+} else if (this.props.bw) {
+  ctx.filter = "contrast(110%) brightness(110%) saturate(100%) sepia(30%) hue-rotate(0deg) grayscale(100%)";
+} else {
+  ctx.filter = "none";
+}
+  
     img.onload = () => {
       ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
       this.drawTextOnCanvas(ctx, canvas);
+	   // Reset filter for future use
+  ctx.filter = "none";
     };
 
     img.onerror = (e) => {

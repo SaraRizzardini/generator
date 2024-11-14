@@ -78,6 +78,22 @@ body {
         left: auto;
         right: 20px;
 	 }
+	 .mask-custom {
+	position:"absolute"	;
+  filter: contrast(140%) brightness(100%) saturate(100%) sepia(50%) hue-rotate(0deg) grayscale(0%) invert(0%) blur(0px);
+  mix-blend-mode: multiply;
+  background:rgba(161, 44, 199, 0.31);
+  opacity: 1;
+  height: "100%";
+}
+	.mask-bw {
+	position:"absolute"	;
+  filter: contrast(110%) brightness(110%) saturate(100%) sepia(30%) hue-rotate(0deg) grayscale(100%) invert(0%) blur(0px);
+  mix-blend-mode: normal;
+  background:rgba(0, 0, 0, 0);
+  opacity: 1;
+  height: "100%";
+}
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;

@@ -4,7 +4,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min'; 
 import React, { Component } from 'react';
 import Moods from './components/moods';
-//import authors from '/authors/authors.json';
+import {createRef}  from 'react';
 import QuoteCanvas from './components/quoteCanvas.js';
 import destroyedCar from './img/destroyedCar.jpg';
 import marlaDango from './img/marlaDango.jpg';
@@ -23,7 +23,9 @@ import lake from './img/lake.jpg';
 import garda from './img/garda.jpg';
 import gardaLake from './img/gardaLake.jpg';
 import clouds from './img/clouds.jpg';
+
 class App extends Component {
+	//carouselRef=createRef();
   state = {
     moods: [],
     selectedQuote: "",
@@ -38,9 +40,11 @@ class App extends Component {
     fontStyle: "Helvetica", // Default font style
     selectedBackground: "",
 	fontColor: "#000000",
-	textBoxHeight: "auto"
+	textBoxHeight: "auto",
+	filterEnabled: false,
+	bw: false
   }
-
+carouselRef=createRef();
 
   componentDidMount() {
     fetch('/moods')
@@ -79,6 +83,7 @@ class App extends Component {
 
 }
   generateQuote = (mood) => {
+	  
   fetch(`/moods/${mood.toLowerCase()}`)
     .then(res => res.json())
     .then((data) => {
@@ -91,6 +96,9 @@ class App extends Component {
         if (data.author) {
           this.fetchAuthor();  // Fetch author info only if author is present
         }
+		 if (this.carouselRef.current) {
+      this.carouselRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
       });
     })
     .catch(console.log);
@@ -98,6 +106,7 @@ class App extends Component {
   
   setBackground = (imageUrl) => {
     this.setState({ selectedBackground: imageUrl });
+ filterStyle: {} 	
   };
 
   toggleEdit = () => {
@@ -133,6 +142,14 @@ document.getElementById("text").readOnly = "false";
   } else {
     this.setState({ backgroundColor: "rgba(255, 255, 255, 0.5)" });
   }
+};
+addFilter = (event) => {
+  const isChecked = event.target.checked;
+  this.setState({ filterEnabled: isChecked });
+};
+grayScale = (event) => {
+  const isChecked = event.target.checked;
+  this.setState({ bw: isChecked });
 };
 addOpacity = (event) => {
   const isChecked = event.target.checked;
@@ -222,22 +239,39 @@ adjustTextareaHeight = () => {
 
  
    return (
+    
       <div className="container" id="quote-box"> {/* Bootstrap container */}
         <Moods moods={this.state.moods} generateQuote={this.generateQuote} />
         {this.state.selectedQuote && (
           <div className="mt-5"> {/* Bootstrap margin-top */}
             <center>
+			<div ref={this.carouselRef} > </div> 
           <h3>A Quote for you:</h3>
 <div className="position-relative" style={{ height: '600px', width:'600px' }}>
-  <div id="carouselExampleControls" className="carousel slide" data-bs-ride="carousel" style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', zIndex: 1 }}>
-    <div className="carousel-inner" style={{ height: '100%' }}>
+ 
+//<div  className={`mask ${this.state.filterEnabled ? "mask-custom" : ""}`}>
+	//	  </div>	
+ // <div id="carouselExampleControls" className="carousel slide img-fluid" data-bs-ride="carousel" style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', zIndex: 1 }}>
+   <div
+  id="carouselExampleControls"
+  className={`carousel slide img-fluid`}
+  data-bs-ride="carousel"
+  style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', zIndex: 1 }}
+>
+
+	<div className="carousel-inner" style={{ height: '100%' }}>
       {images.map((image, index) => (
+	  
         <div className={`carousel-item ${index === 0 ? 'active' : ''}`} key={index} onClick={() => this.setBackground(image)}>
-          <img src={image} className="d-block w-100" alt={`Slide ${index}`} />
-        </div>
-      ))}
-    </div>
-                  <a className="carousel-control-prev" href="#carouselExampleControls" data-bs-target="#carouselExampleControls" type="button" role="button" data-bs-slide="prev"  style={{ bottom: '10px',  zIndex: 5 }}>
+         		  
+		  <img src={image} className={`d-block w-100 img-fluid ${this.state.filterEnabled ? "mask-custom" : ""} ${this.state.bw ? "mask-bw" : ""}`} alt={`Slide ${index}`} />
+		 
+ </div>
+  
+	   
+      ))}</div>
+    </div>      
+		   <a className="carousel-control-prev" href="#carouselExampleControls" data-bs-target="#carouselExampleControls" type="button" role="button" data-bs-slide="prev"  style={{ bottom: '10px',  zIndex: 5 }}>
                     <span className="carousel-control-prev-icon" aria-hidden="true"></span>
                     <span className="sr-only">Previous</span>
                   </a>
@@ -248,9 +282,8 @@ adjustTextareaHeight = () => {
                 </div>
 
                 <textarea
-			name="text"
+			    name="text"
 				id="text"
-				//readOnly=false
                   className="form-control-plaintext form-control-lg" // Bootstrap form-control
                   value={this.state.isEditing ? this.state.editableQuote : this.state.selectedQuote}
                   onChange={this.handleInputChange}
@@ -271,6 +304,7 @@ adjustTextareaHeight = () => {
                   }}
                 />
               </div>
+			  
 <center>
 <div className=" d-flex justify-content-center mt-2">
               <button className="btn btn-light" onClick={this.toggleEdit} >
@@ -309,8 +343,7 @@ adjustTextareaHeight = () => {
                     onChange={this.handleBackgroundChange}
                   />
                   <br />
-				  {/*Remove Background option*/}
-					  {/* <button className="btn btn-info mt-2" onClick={this.removeBackground}>Remove Background</button>*/}
+				 
 <div>
 <div class="form-check form-switch form-check-inline">
   <input class="form-check-input" type="checkbox"  id="flexSwitchCheckCheckedDefault" name="removeBG" onChange={this.removeBackground}/>
@@ -320,12 +353,20 @@ adjustTextareaHeight = () => {
   <input class="form-check-input" type="checkbox"  id="flexSwitchCheckCheckedDefault" onChange={this.addOpacity}  />
   <label class="form-check-label" for="flexSwitchCheckCheckedDefault">Blur Background</label>
 </div>   
+<div class="form-check form-switch form-check-inline">
+  <input class="form-check-input" type="checkbox"  id="flexSwitchCheckCheckedDefault" onChange={this.addFilter}   />
+  <label class="form-check-label" for="flexSwitchCheckCheckedDefault">Add Filter</label>
+</div>  
+<div class="form-check form-switch form-check-inline">
+  <input class="form-check-input" type="checkbox"  id="flexSwitchCheckCheckedDefault" onChange={this.grayScale}   />
+  <label class="form-check-label" for="flexSwitchCheckCheckedDefault">Black and White</label>
+</div>  
 </div>            
 				 <br />
 				  {/* Font Style Picker */}
                   <label className="form-label">Font Style: </label>
                   <select
-                    className="form-select" // Bootstrap form-select
+                    className="form-select"
                     value={this.state.fontStyle}
                     onChange={this.handleFontChange}
                   >
@@ -343,11 +384,11 @@ adjustTextareaHeight = () => {
 					<option value="Pacifico" style={{fontFamily:"Pacifico"}}>Pacifico</option>
 					<option value="Londrina Sketch" style={{fontFamily:"Londrina Sketch"}}>Londrina Sketch</option>
                     <option value="Protest Strike" style={{fontFamily:"Protest Strike"}}>Protest Strike</option>
-				  <option value="Rakkas" style={{fontFamily:"Rakkas"}}>Rakkas</option>
-				  <option value="Permanent Marker" style={{fontFamily:"Permanent Marker"}}>Permanent Marker</option>
-				  <option value="Shadows Into Light" style={{fontFamily:"Shadows Into Light"}}>Shadows Into Light</option>
-				   <option value="Lobster" style={{fontFamily:"Lobster"}}>Lobster</option>
-				   <option value="Lexend Mega" style={{fontFamily:"Lexend Mega"}}>Lexend Mega</option>
+				    <option value="Rakkas" style={{fontFamily:"Rakkas"}}>Rakkas</option>
+				    <option value="Permanent Marker" style={{fontFamily:"Permanent Marker"}}>Permanent Marker</option>
+				    <option value="Shadows Into Light" style={{fontFamily:"Shadows Into Light"}}>Shadows Into Light</option>
+				    <option value="Lobster" style={{fontFamily:"Lobster"}}>Lobster</option>
+				    <option value="Lexend Mega" style={{fontFamily:"Lexend Mega"}}>Lexend Mega</option>
 				  </select>
                   <br />
 				  <label className="form-label">Font Color: </label>
@@ -372,6 +413,9 @@ adjustTextareaHeight = () => {
   backgroundColor={this.state.backgroundColor}
   onQuoteChange={this.handleInputChange}
   textBoxHeight={this.state.textBoxHeight}
+  filterEnabled={this.state.filterEnabled}
+  bw={this.state.bw}
+  
 />
       </div>
    
