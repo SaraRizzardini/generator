@@ -1,3 +1,40 @@
+**Random Quote Generator**
+
+_Inspiring quotes at your fingertips, tailored to your mood!_
+
+**Description**
+
+The Random Quote Generator is a web application designed to uplift and inspire users through a collection of carefully curated quotes. Whether you're feeling happy, thoughtful, or in need of a spark, this app delivers quotes customized to your mood.
+
+With a seamless user interface built using React and a powerful backend powered by Quarkus, this project showcases my full-stack development skills and creativity in crafting engaging user experiences.
+
+**Features**
+
+🎨 Mood-based Quote Generation: Select a mood and get a fitting quote instantly.
+✍️ Editable Quotes: Customize quotes with different fonts and colors.
+📲 Download and Share: Download your favorite quotes or share them on social media.
+
+**Technologies Used**
+
+**Frontend:**
+React
+Bootstrap
+Canvas for custom text rendering
+**Backend:**
+Quarkus (Java)
+REST API with caching for optimized performance
+**Other Tools:**
+Dockerized deployment using Jib
+JSON-based data for quotes and authors
+Service workers for offline support
+
+## License  
+
+This project is licensed under the [Creative Commons Attribution-NonCommercial 4.0 International License](https://creativecommons.org/licenses/by-nc/4.0/).  
+
+![License: CC BY-NC 4.0](https://licensebuttons.net/l/by-nc/4.0/88x31.png)
+
+
 # quarkus-react
 
 This project uses Quarkus, the Supersonic Subatomic Java Framework.
