@@ -100,25 +100,51 @@ console.log("maxWidth:", maxWidth);
   const padding = 20; 
   const textHeight = getTextHeight({ ctx, text, fontStyle });
   const rectX = x - (maxWidth / 2) ;
-  const rectY = y - (textHeight*7) ;
+  const rectY = y - (text.length*2) ;
+  const bigY = y - (text.length/3);
   const rectWidth = maxWidth + 2 * padding;     // Width of the rectangle
-  const rectHeight = textHeight + 2 * padding;  // Height of the rectangle
-
-  // Apply font settings
-  ctx.font = `30px ${fontStyle}`;
-  ctx.textAlign = "center";
-  ctx.textBaseline = "middle";
+  const rectHeight = text.length + 10 * padding;  // Height of the rectangle
   
+  ctx.textBaseline = "middle";
+  if(text.length > 300){
+	  ctx.font= `20px ${fontStyle}`;
+	  ctx.textAlign = "start";
+	  console.log("smaller font call");
+	  
+  } else{
+	  ctx.font = `30px ${fontStyle}`;
+	  ctx.textAlign = "center";
+	  console.log("usual font");
+	  
+  }
 ctx.fillStyle = backgroundColor;
+if(text.length < 220){
   ctx.fillRect(
     rectX, 
     rectY, 
     maxWidth, 
-   canvas.height/2
+    rectHeight
  
   ); 
+  ctx.fillStyle = fontColor;
+const { height } = drawText(ctx, text, {
+  x: rectX + padding,
+  y:  y - text.length / 2 - padding,
+  width: maxWidth - 20,
+  height: textHeight,
+  fontStyle: fontStyle
+})
+}
+else{
+	
+	ctx.fillRect(
+    rectX, 
+    bigY, 
+    maxWidth, 
+    y +100
  
-ctx.fillStyle = fontColor;
+  ); 
+  ctx.fillStyle = fontColor;
 const { height } = drawText(ctx, text, {
   x: rectX + padding,
   y:  y - textHeight / 2 - padding,
@@ -126,11 +152,14 @@ const { height } = drawText(ctx, text, {
   height: textHeight,
   fontStyle: fontStyle
 })
+}
+
   
 
-
+console.log("text length:", text.length);
 console.log("quote:", text);
-console.log("height in drawText:",height);
+
+console.log("textHeight:", textHeight);
 console.log("Font-color:", fontColor);
   
   }

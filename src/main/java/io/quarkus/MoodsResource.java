@@ -23,6 +23,7 @@ public class MoodsResource {
         quoteProvider.setChangeQuotes();
         quoteProvider.setGoodNightQuotes();
         quoteProvider.setDreamQuotes();
+        quoteProvider.setQueerQuotes();
         quoteProvider.setAuthors();
 		Set <Mood> moods = Collections.newSetFromMap(Collections.synchronizedMap(new LinkedHashMap<>()));
 
@@ -68,7 +69,10 @@ public class MoodsResource {
 		revolution.setQuotes(QuoteProvider.revolutionQuotes());
 		moods.add(revolution);
 		
-		
+		Mood queer = new Mood();
+		queer.setName("Queer");
+		queer.setQuotes(QuoteProvider.queerQuotes());
+		moods.add(queer);
 
 	
 
