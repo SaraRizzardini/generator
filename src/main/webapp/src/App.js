@@ -247,10 +247,8 @@ adjustTextareaHeight = () => {
             <center>
 			<div ref={this.carouselRef} > </div> 
           <h3>A Quote for you:</h3>
-<div className="position-relative" style={{ height: '600px', width:'600px' }}>
- 
-//<div  className={`mask ${this.state.filterEnabled ? "mask-custom" : ""}`}>
-	//	  </div>	
+<div className="position-relative" id="carousel-container" style={{ width: '600px', height: '600px' }} key={this.state.fontStyle}>>
+ 	
  // <div id="carouselExampleControls" className="carousel slide img-fluid" data-bs-ride="carousel" style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', zIndex: 1 }}>
    <div
   id="carouselExampleControls"
@@ -259,7 +257,7 @@ adjustTextareaHeight = () => {
   style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', zIndex: 1 }}
 >
 
-	<div className="carousel-inner" style={{ height: '100%' }}>
+	<div className="carousel-inner" style={{ width:'100%', height:'600px' }}>
       {images.map((image, index) => (
 	  
         <div className={`carousel-item ${index === 0 ? 'active' : ''}`} key={index} onClick={() => this.setBackground(image)}>
@@ -328,7 +326,8 @@ adjustTextareaHeight = () => {
     <p>{this.state.authText}</p>
   </div>
 </div>
-			  </div>
+<div className="d-flex justify-content-end mt-2 ms-auto p-2 bd-highlight">
+		<small className="text-muted">Click on the image to set it as background</small></div>	  </div>
 </center>
               {this.state.isEditing && (
                 <div className="mt-3"> {/* Bootstrap margin-top */}

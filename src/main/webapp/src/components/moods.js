@@ -11,9 +11,7 @@ const Moods = ({ moods, generateQuote }) => {
 
   return (
     <div className="container">
-	 <div class="d-flex top-0 start-0">
-	<img src={finalBall} className="App-logo" alt="logo"></img>
-	</div>
+	
 	 <br/>
 	
 	
